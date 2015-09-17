@@ -88,4 +88,58 @@ describe('TodoCtrl', function() {
         expect(window.scrollY).toBe(0);
       });
     });
+
+    it('increaseMax testing', function increaseMaxTesing() {
+      // body...
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope
+      });
+
+      scope.maxQuestion = 2;
+      scope.totalCount = 3;
+      scope.increaseMax();
+      expect(scope.maxQuestion).toEqual(12);
+    });
+
+    it('First and Rest sentences testing', function() {
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope
+      });
+      var string = 'hello! world';
+      var fr = scope.getFirstAndRestSentence(string);
+      expect(fr[0]).toBe('hello!');
+      expect(fr[1]).toBe(' world')
+    });
+
+    it('Facebook login ', function facebookLoginTest() {
+      // body...
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location,
+        $firebaseArray: firebaseArray,
+        $sce: sce,
+        $localStorage: localStorage,
+        $window: window
+      });
+
+      scope.FBLogin();
+      expect(scope.isAdmin).toBe(true);
+
+    });
+
+    it('Facebook logout ', function facebookLoginTest() {
+      // body...
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location,
+        $firebaseArray: firebaseArray,
+        $sce: sce,
+        $localStorage: localStorage,
+        $window: window
+      });
+
+      scope.FBLogout();
+      expect(scope.isAdmin).toBe(false);
+
+    });
   });
