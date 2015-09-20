@@ -51,7 +51,8 @@ describe('TodoCtrl', function() {
           {str:"Hello.co? This is Sung", exp: "Hello.co?"},
           {str:"Hello.co This is Sung", exp: "Hello.co This is Sung"},
           {str:"Hello.co \nThis is Sung", exp: "Hello.co \n"},
-
+          {str:"! Hello co This is Sung", exp: "!"},
+          {str:"Hello co. This is Sung", exp: "Hello co."},  
           {str:"Hello?? This is Sung", exp: "Hello??"},
         ];
 
@@ -94,38 +95,27 @@ describe('TodoCtrl', function() {
       var ctrl = controller('TodoCtrl', {
         $scope: scope
       });
-
       scope.maxQuestion = 2;
       scope.totalCount = 3;
       scope.increaseMax();
       expect(scope.maxQuestion).toEqual(12);
     });
 
-    it('First and Rest sentences testing', function() {
-      var ctrl = controller('TodoCtrl', {
-        $scope: scope
-      });
-      var string = 'hello! world';
-      var fr = scope.getFirstAndRestSentence(string);
-      expect(fr[0]).toBe('hello!');
-      expect(fr[1]).toBe(' world')
-    });
-
-    it('Facebook login ', function facebookLoginTest() {
-      // body...
-      var ctrl = controller('TodoCtrl', {
-        $scope: scope,
-        $location: location,
-        $firebaseArray: firebaseArray,
-        $sce: sce,
-        $localStorage: localStorage,
-        $window: window
-      });
-
-      scope.FBLogin();
-      expect(scope.isAdmin).toBe(true);
-
-    });
+    // it('Facebook login ', function facebookLoginTest() {
+    //   // body...
+    //   var ctrl = controller('TodoCtrl', {
+    //     $scope: scope,
+    //     $location: location,
+    //     $firebaseArray: firebaseArray,
+    //     $sce: sce,
+    //     $localStorage: localStorage,
+    //     $window: window
+    //   });
+    //
+    //   scope.FBLogin();
+    //   expect(scope.isAdmin).toBe(true);
+    //
+    // });
 
     it('Facebook logout ', function facebookLoginTest() {
       // body...
@@ -142,4 +132,5 @@ describe('TodoCtrl', function() {
       expect(scope.isAdmin).toBe(false);
 
     });
+
   });
