@@ -180,27 +180,27 @@ $scope.markAll = function (allCompleted) {
 	});
 };
 
-$scope.FBLogin = function () {
-	var ref = new Firebase(firebaseURL);
-	ref.authWithOAuthPopup("facebook", function(error, authData) {
-		if (error) {
-			console.log("Login Failed!", error);
-		} else {
-			$scope.$apply(function() {
-				$scope.$authData = authData;
-				$scope.isAdmin = true;
-			});
-			console.log("Authenticated successfully with payload:", authData);
-		}
-	});
-};
+	$scope.FBLogin = function () {
+		var ref = new Firebase(firebaseURL);
+		ref.authWithOAuthPopup("facebook", function(error, authData) {
+			if (error) {
+				console.log("Login Failed!", error);
+			} else {
+				$scope.$apply(function() {
+					$scope.$authData = authData;
+					$scope.isAdmin = true;
+				});
+				console.log("Authenticated successfully with payload:", authData);
+			}
+		});
+	};
 
-$scope.FBLogout = function () {
-	var ref = new Firebase(firebaseURL);
-	ref.unauth();
-	delete $scope.$authData;
-	$scope.isAdmin = false;
-};
+	$scope.FBLogout = function () {
+		var ref = new Firebase(firebaseURL);
+		ref.unauth();
+		delete $scope.$authData;
+		$scope.isAdmin = false;
+	};
 
 $scope.increaseMax = function () {
 	if ($scope.maxQuestion < $scope.totalCount) {

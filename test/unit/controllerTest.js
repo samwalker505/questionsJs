@@ -52,8 +52,10 @@ describe('TodoCtrl', function() {
           {str:"Hello.co This is Sung", exp: "Hello.co This is Sung"},
           {str:"Hello.co \nThis is Sung", exp: "Hello.co \n"},
           {str:"! Hello co This is Sung", exp: "!"},
-          {str:"Hello co. This is Sung", exp: "Hello co."},  
+          {str:"Hello co. This is Sung", exp: "Hello co."},
+          {str:"Hello co This is Sung", exp: "Hello co This is Sung"},
           {str:"Hello?? This is Sung", exp: "Hello??"},
+          {str:"..Hello?? This is Sung", exp: "..Hello??"},
         ];
 
         for (var i in testInputs) {
@@ -71,6 +73,17 @@ describe('TodoCtrl', function() {
         });
 
         expect(scope.roomId).toBe("new");
+      });
+
+      it('RoomId all', function() {
+        location.path('/');
+
+        var ctrl = controller('TodoCtrl', {
+          $scope: scope,
+          $location: location
+        });
+
+        expect(scope.roomId).toBe("all");
       });
 
       it('toTop Testing', function() {
@@ -132,5 +145,112 @@ describe('TodoCtrl', function() {
       expect(scope.isAdmin).toBe(false);
 
     });
+
+    it('clearCompletedTodos testing', function (argument) {
+      // body...
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location,
+        $firebaseArray: firebaseArray,
+        $sce: sce,
+        $localStorage: localStorage,
+        $window: window
+      });
+
+      var todo = {
+        completed: true
+      }
+
+      var todo2 = {
+        completed: false
+      }
+
+      scope.todos = [];
+      scope.todos.push(todo);
+      scope.todos.push(todo2);
+      scope.clearCompletedTodos();
+    });
+
+    it('doneEditing testing', function (argument) {
+      // body...
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location,
+        $firebaseArray: firebaseArray,
+        $sce: sce,
+        $localStorage: localStorage,
+        $window: window
+      });
+
+      var todo = {
+        wholeMsg: "hi "
+      }
+
+      var todo2 = {
+        wholeMsg: ""
+      }
+
+      scope.todos = [];
+      scope.doneEditing(todo);
+      scope.doneEditing(todo2);
+    })
+
+    it('addTodo testing', function () {
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location
+      });
+      scope.input = {};
+      scope.input.wholeMsg = ' ';
+    });
+
+    // it('facebook login', function () {
+    //   var ctrl = controller('TodoCtrl', {
+    //     $scope: scope,
+    //     $location: location
+    //   });
+    //   spyOn(scope, 'FBlogin').and.callFake(function () {
+    //
+    //   })
+    // })
+
+    it('watchCollection test', function() {
+      scope.todos = [];
+      var dump = "";
+      var todo = {
+        completed: true,
+        wholeMsg: "abced"
+      }
+
+      var todo2 = {
+        completed: false,
+        head: "abced",
+        wholeMsg: "abced"
+      }
+      scope.todos.push(dump);
+      scope.todos.push(todo);
+      scope.todos.push(todo2);
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location
+      });
+      scope.todos.push(todo);
+      scope.todos.push(todo2);
+      scope.$digest();
+
+    });
+
+    it('addTodo test', function () {
+      scope.input = {};
+      scope.input.wholeMsg = "";
+      var ctrl = controller('TodoCtrl', {
+        $scope: scope,
+        $location: location
+      });
+      scope.addTodo();
+      scope.input.wholeMsg = "abcd sjpojpo";
+      scope.addTodo();
+
+    })
 
   });
