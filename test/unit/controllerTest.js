@@ -56,6 +56,7 @@ describe('TodoCtrl', function() {
           {str:"Hello co This is Sung", exp: "Hello co This is Sung"},
           {str:"Hello?? This is Sung", exp: "Hello??"},
           {str:"..Hello?? This is Sung", exp: "..Hello??"},
+          {str:" A. B? C!", exp: " A."}
         ];
 
         for (var i in testInputs) {
@@ -112,6 +113,11 @@ describe('TodoCtrl', function() {
       scope.totalCount = 3;
       scope.increaseMax();
       expect(scope.maxQuestion).toEqual(12);
+
+      scope.maxQuestion = 3;
+      scope.totalCount = 2;
+      scope.increaseMax();
+      expect(scope.maxQuestion).toEqual(3);
     });
 
     // it('Facebook login ', function facebookLoginTest() {
@@ -251,6 +257,7 @@ describe('TodoCtrl', function() {
       scope.input.wholeMsg = "abcd sjpojpo";
       scope.addTodo();
 
-    })
+    });
+
 
   });

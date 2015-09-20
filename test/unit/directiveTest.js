@@ -17,8 +17,12 @@ describe('Unit testing on todo directives', function() {
     // Compile a piece of HTML containing the directive
     var element = $compile("<todo-blur></todo-blur>")($rootScope);
     // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
+
     $rootScope.$digest();
+    spyOn(element.attrs, 'todoBlur');
     element.blur();
+    expect(element.attr('todoBlur')).toHaveBeenCalled();
+
     // Check that the compiled element contains the templated content
     // expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
   });
