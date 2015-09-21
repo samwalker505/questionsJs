@@ -1,50 +1,60 @@
-describe('Unit testing on todo directives', function() {
-  var $compile,
-      $rootScope;
+var triggerKeyDown = function (element, keyCode) {
+		var e = jQuery.Event("keydown");
+		e.keyCode = keyCode;
+		element.triggerHandler(e);
+	};
 
-  // Load the todomvc module, which contains the directive
-  beforeEach(module('todomvc'));
+	describe('todoEscape directive', function () {
+		var scope, compile, browser;
+    beforeEach(module('todomvc'));
+		beforeEach(inject(function ($rootScope, $compile, $browser) {
+			scope = $rootScope.$new();
+			compile = $compile;
+			browser = $browser;
+		}));
 
-  // Store references to $rootScope and $compile
-  // so they are available to all tests in this describe block
-  beforeEach(inject(function(_$compile_, _$rootScope_){
-    // The injector unwraps the underscores (_) from around the parameter names when matching
-    $compile = _$compile_;
-    $rootScope = _$rootScope_;
-  }));
+		it('should evaluate the expression binded to the directive', function () {
+			var someValue = false,
+				el = angular.element('<input todo-escape="doSomething()">');
 
-  it('test todo blur', function() {
-    // Compile a piece of HTML containing the directive
-    var element = $compile("<todo-blur></todo-blur>")($rootScope);
-    // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
+			scope.doSomething = function () {
+				someValue = !someValue;
+			};
 
-    $rootScope.$digest();
-    spyOn(element.attrs, 'todoBlur');
-    element.blur();
-    expect(element.attr('todoBlur')).toHaveBeenCalled();
+			compile(el)(scope);
 
-    // Check that the compiled element contains the templated content
-    // expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
-  });
+			triggerKeyDown(el, 27);
 
-  it('test todo focus', function() {
-    // Compile a piece of HTML containing the directive
-    var element = $compile("<todo-focus></todo-focus>")($rootScope);
-    // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
-    $rootScope.$digest();
-    // Check that the compiled element contains the templated content
-    // expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
-  });
+			expect(someValue).toBe(true);
+      triggerKeyDown(el, 25);
+      expect(someValue).tobe(false);
+		});
+	});
 
-  it('test todo escape', function() {
-    // Compile a piece of HTML containing the directive
-    var element = $compile("<todo-escape></todo-escape>")($rootScope);
-    // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
-    $rootScope.$digest();
-    var e = angular.element.Event('keydown');
-    e.which = 27;
-    element.triggerHandler('keydown');
-    // Check that the compiled element contains the templated content
-    // expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
-  });
-});
+describe('todoFocus directive', function () {
+		var scope, compile, browser;
+    beforeEach(module('todomvc'));
+		beforeEach(inject(function ($rootScope, $compile, $browser) {
+			scope = $rootScope.$new();
+			compile = $compile;
+			browser = $browser;
+		}));
+
+		it('should focus on truthy expression', function () {
+			var el = angular.element('<input todo-focus="focus">');
+			scope.focus = false;
+
+			compile(el)(scope);
+			expect(browser.deferredFns.length).toBe(0);
+
+			scope.$apply(function () {
+				scope.focus = true;
+			});
+
+      scope.$apply(function () {
+        scope.focus = false;
+      });
+
+			expect(browser.deferredFns.length).toBe(1);
+		});
+	});
