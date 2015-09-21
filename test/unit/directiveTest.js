@@ -13,23 +13,31 @@ var triggerKeyDown = function (element, keyCode) {
 			browser = $browser;
 		}));
 
-		it('should evaluate the expression binded to the directive', function () {
-			var someValue = false,
-				el = angular.element('<input todo-escape="doSomething()">');
+		it('ecscape testing true', function () {
+			var someValue = false;
+			var el = compile('<input todo-escape="foo()">')(scope);
 
-			scope.doSomething = function () {
+			scope.foo = function () {
 				someValue = !someValue;
 			};
-
-			compile(el)(scope);
-
 			triggerKeyDown(el, 27);
-
 			expect(someValue).toBe(true);
-      triggerKeyDown(el, 25);
-      expect(someValue).tobe(false);
+
 		});
+
+    it('ecscape testing true', function () {
+      var someValue = false;
+      var el = compile('<input todo-escape="foo()">')(scope);
+
+      scope.foo = function () {
+        someValue = !someValue;
+      };
+      triggerKeyDown(el, 25);
+      expect(someValue).toBe(false);
+
+    });
 	});
+
 
 describe('todoFocus directive', function () {
 		var scope, compile, browser;
